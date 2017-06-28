@@ -25,11 +25,11 @@ public class reproducir extends AppCompatActivity implements View.OnClickListene
     ArrayList<File> canciones;
     int posicion;
     Uri uri;
-    String aux = "";
-    Button dere , izqui, play, strop, pause, btlista;
+    Button dere , izqui, play, pause, btlista;
     SeekBar sb, sbVolumen;
     TextView nombre , tiempotrascurrido, tiempototal;
     AudioManager audioManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,6 +58,7 @@ public class reproducir extends AppCompatActivity implements View.OnClickListene
 
 
         Inicio();
+
         sb.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {//manejo de la barra
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -75,6 +76,7 @@ public class reproducir extends AppCompatActivity implements View.OnClickListene
 
             }
         });
+
     }
 
     @Override
@@ -160,11 +162,10 @@ public class reproducir extends AppCompatActivity implements View.OnClickListene
         @Override
         protected void onPostExecute(Boolean aBoolean) {
             super.onPostExecute(aBoolean);
-            if (aBoolean)
-            {
-                Toast.makeText(getBaseContext(),"exito",Toast.LENGTH_LONG).show();
+            if (!mediaPlayer.isPlaying()){
+               siguiente();
             }
-            siguiente();
+
         }
 
 

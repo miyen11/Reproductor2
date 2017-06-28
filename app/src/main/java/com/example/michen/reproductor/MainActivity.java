@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                startActivity( new Intent(getApplicationContext(),reproducir.class)
+                startActivity( new Intent(getApplicationContext(),reproducir.class)//cambiamos
                         .putExtra("pos",position).putExtra("canciones",canciones));
             }
         });

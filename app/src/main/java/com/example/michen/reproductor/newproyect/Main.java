@@ -1,25 +1,41 @@
-package com.example.michen.reproductor;
+package com.example.michen.reproductor.newproyect;
 
+import android.content.Intent;
 import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+
+import com.example.michen.reproductor.R;
 
 import java.io.File;
 import java.util.ArrayList;
 
 public class Main extends AppCompatActivity {
 
-    private ArrayList sog;
+    private Button GotoList;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main3);
-
-        searchsong(Environment.getExternalStorageDirectory());
-
-
+        GotoList =(Button) findViewById(R.id.button) ;
+        listsong();
+        GotoList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(getApplicationContext(),VisualPlayer.class);
+                startActivity(i);
+            }
+        });
 
     }
+
+    protected  ArrayList<File> listsong(){
+        final ArrayList<File>  li =searchsong(Environment.getExternalStorageDirectory());
+         return li;
+    }//verificar si anda
 
     protected ArrayList<File> searchsong(File root) {
         ArrayList<File>  song= new ArrayList<File>();
@@ -35,6 +51,6 @@ public class Main extends AppCompatActivity {
 
         }
         return song;
-    }
+    } //verificar si anda
 }
 

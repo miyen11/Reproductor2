@@ -35,12 +35,10 @@ public class Main2Activity extends AppCompatActivity implements OnCompletionList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
 
-        main m = new main();
-        ArrayList<File> songIU = m.song;
 
 
         lv =(ListView)findViewById(R.id.listIU);
-        items = new String[songIU.size()];
+      //  items = new String[songIU.size()];
         for (int i = 0; i<canciones.size();i++){
 
             items[i] = canciones.get(i).getName().toString().replace(".mp3","").replace(".wav","").toLowerCase();

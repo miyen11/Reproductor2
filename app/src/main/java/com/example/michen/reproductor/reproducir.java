@@ -59,23 +59,6 @@ public class reproducir extends AppCompatActivity implements View.OnClickListene
 
         Inicio();
 
-        sb.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {//manejo de la barra
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                tiempotrascurrido.setText(DateUtils.formatElapsedTime(progress / 1000));
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-                mediaPlayer.seekTo(seekBar.getProgress());
-
-            }
-        });
 
     }
 

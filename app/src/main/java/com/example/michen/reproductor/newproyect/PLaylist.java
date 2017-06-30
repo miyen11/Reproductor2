@@ -15,54 +15,81 @@ import java.util.ArrayList;
  */
 
 public class PLaylist {
-    mMediaPLayer mmp = new mMediaPLayer();
-    private ArrayList song;
-    private int position ;
-    Uri uri;
-    private ArrayList<File> manejoList;//entender la logica para ver como ver incluir el arraylista
-    private Context context;
 
 
-    public PLaylist() {
-        VisualPlayer vp = new VisualPlayer();
-        manejoList = vp.mlista;
+    public ArrayList<File> song;
+    public  int position = 0;
+    public Context context;
+
+    public Uri uri;
+
+    mMediaPLayer mmp;
+
+
+    public PLaylist(ArrayList song, int position, Context context) {
+        this.song = song;
+        this.position = position;
+        this.context = context;
+        mmp = new mMediaPLayer(context);
 
     }
 
-    public void playSelectPosition(Context c,int pos,ArrayList<File> arrayList)
+    public void playSelectPosition(int i)//,int pos, ArrayList<File> arrayList)
     {
-        context = c;
-        position = pos;
-        song = arrayList;
+        position = i;
         uri = Uri.parse(song.get(position).toString());
-        startfrombeginnin(context,uri);
-    }
+        mmp.createMediPlayer(uri);
+        mmp.playMusic();
 
+    }
 
     public void previus(){
 
-        mmp.stopMusic();
-        position = position-1;
+        if(position -1 <0)
+        {
+            position = song.size()-1;
+        }else {
+            position = position -1;
+        }
+        //mmp.stopMusic();
         uri = Uri.parse(song.get(position).toString());
-        startfrombeginnin(context,uri);
+        mmp.createMediPlayer(uri);
+        mmp.playMusic();
 
     }
 
 
     public void next(){
-        mmp.stopMusic();
-        position = position+ 1;
+        position = position + 1;
+//verificar si esta una playlist y detenerla
         uri = Uri.parse(song.get(position).toString());
-        startfrombeginnin(context,uri);
+        mmp.createMediPlayer(uri);
+        mmp.playMusic();
+
+
     }
 
-    public void startfrombeginnin(Context c ,Uri u){
+    public void play(){
+        uri = Uri.parse(song.get(position).toString());
 
-        mmp.createMediPlayer(c,u);
-        mmp.playMusic();
+    }
+    public String getName(){
+
+        String name = song.get(position).getName().toString();
+        return name;
+    }
+
+    public boolean PLisplaying(){
+        boolean PLisplaing = false;
+       if (mmp.MPisplaying())
+       {
+           PLisplaing = true;
+       }
+       return PLisplaing;
     }
 
     public void strarplay(){
+        //if() ver condiciones para que no esten reproduciendo dos canciuones al mismo tiempo
         mmp.playMusic();
     }
 
@@ -76,4 +103,7 @@ public class PLaylist {
         return progres;
     }
 
+    public void PLseekbar(int i) {
+          mmp.seekbar(i);
+    }
 }

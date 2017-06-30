@@ -10,30 +10,51 @@ import android.net.Uri;
 
 public class mMediaPLayer {
 
+    Context context;
+
 
     MediaPlayer mediaPlayer;
 
-
-    public void setMediaPlayer(MediaPlayer mediaPlayer) {
-        this.mediaPlayer = mediaPlayer;
+    public mMediaPLayer(Context context) {
+        this.context = context;
+        //this.uri = uri;
     }
 
-    public MediaPlayer getMediaPlayer() {
-        return mediaPlayer;
-    }
 
+    public void createMediPlayer(Uri uri)
+    {
+
+        try {
+           mediaPlayer = MediaPlayer.create(context,uri);
+        }catch (Exception e){
+
+        }
+
+    }
     public void playMusic()
     {
         if(!mediaPlayer.isPlaying()){
             mediaPlayer.start();
         }
     }
-
     public void stopMusic(){
-        if(mediaPlayer.isPlaying())
-        {
+
             mediaPlayer.stop();
+
+    }
+
+    public void pauseMusic(){
+        if (mediaPlayer.isPlaying()) {
+            mediaPlayer.pause();
         }
+    }
+
+    public boolean MPisplaying() {
+        boolean isplaying = false;
+        if (mediaPlayer.isPlaying()){
+            isplaying = true;
+        }
+        return isplaying;
     }
 
     public int getProgress(){
@@ -47,10 +68,9 @@ public class mMediaPLayer {
         return duration;
     }
 
-    public void createMediPlayer(Context c , Uri u)
+    public void seekbar(int m)
     {
-        mediaPlayer.stop();
-        mediaPlayer = MediaPlayer.create(c,u);
+        mediaPlayer.seekTo(m);
     }
 
 

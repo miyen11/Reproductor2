@@ -14,7 +14,7 @@ import java.util.ArrayList;
 
 public class Main extends AppCompatActivity {
 
-    private Button GotoList;
+     Button GotoList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,18 +25,15 @@ public class Main extends AppCompatActivity {
         GotoList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(getApplicationContext(),VisualPlayer.class);
-                startActivity(i);
+                startActivity( new Intent(getApplicationContext(),VisualPlayer.class).putExtra("listsong",listsong()));
             }
         });
-
     }
 
     protected  ArrayList<File> listsong(){
         final ArrayList<File>  li =searchsong(Environment.getExternalStorageDirectory());
          return li;
-    }//verificar si anda
-
+    }
     protected ArrayList<File> searchsong(File root) {
         ArrayList<File>  song= new ArrayList<File>();
         File[] file = root.listFiles();
@@ -48,9 +45,7 @@ public class Main extends AppCompatActivity {
                     song.add(li);
                 }
             }
-
         }
         return song;
     } //verificar si anda
 }
-

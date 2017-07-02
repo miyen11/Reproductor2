@@ -23,7 +23,7 @@ import com.example.michen.reproductor.reproducir;
 import java.io.File;
 import java.util.ArrayList;
 
-public class VisualPlayer extends AppCompatActivity implements View.OnClickListener{
+public class VisualPlayer extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemClickListener {
 
     SeekBar sb;
     ListView lv;
@@ -38,6 +38,7 @@ public class VisualPlayer extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_visual_player);
 
+        final Context c = getApplicationContext();
 
         sb = (SeekBar)findViewById(R.id.seekBar2);
         lv = (ListView) findViewById(R.id.idList);
@@ -51,6 +52,7 @@ public class VisualPlayer extends AppCompatActivity implements View.OnClickListe
         play.setOnClickListener(this);
         next.setOnClickListener(this);
         previus.setOnClickListener(this);
+        lv.setOnItemClickListener(this);
 
         final ArrayList<File> listsong = (ArrayList<File>) getIntent().getSerializableExtra("listsong");
         items = new String[listsong.size()];
@@ -62,9 +64,8 @@ public class VisualPlayer extends AppCompatActivity implements View.OnClickListe
         ArrayAdapter<String> adapter = new ArrayAdapter<String>
                 (getApplicationContext(),R.layout.canciones,R.id.textView,items);
         lv.setAdapter(adapter);
-        final Context c = getApplicationContext();
 
-        pl = new PLaylist(listsong,0,c);
+        pl = new PLaylist(listsong, c);
 
         sb.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {//manejo de la barra
             @Override
@@ -85,38 +86,36 @@ public class VisualPlayer extends AppCompatActivity implements View.OnClickListe
             }
         });
 
-
-        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                pl.playSelectPosition(i);
-                new progressbar().execute();
-            }
-        });
     }
-
-
 
     @Override
     public void onClick(View view) {
         int id = view.getId();
         switch (id){
+            case R.id.idPlay:
+                pl.play();
+                new progressbar().execute();
+                break;
             case R.id.idNext:
                 pl.next();
+                new progressbar().execute();
                 break;
             case R.id.idPrev:
                 pl.previus();
+                new progressbar().execute();
                 break;
-            case  R.id.idPlay:
-                if(pl.PLisplaying()){
-                    pl.strarplay();
-                }
-                break;
+
         }
     }
 
     protected void startfromBeginning(){
         //buscar la cacncion actual
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+        pl.playSelectPosition(i);
+        new progressbar().execute();
     }
 
     private class progressbar extends AsyncTask<Void,Integer,Boolean>{

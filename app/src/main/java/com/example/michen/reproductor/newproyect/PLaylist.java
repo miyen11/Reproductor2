@@ -26,44 +26,40 @@ public class PLaylist {
     mMediaPLayer mmp;
 
 
-    public PLaylist(ArrayList song, int position, Context context) {
+    public PLaylist(ArrayList song, Context context) {
         this.song = song;
-        this.position = position;
         this.context = context;
         mmp = new mMediaPLayer(context);
-
     }
 
-    public void playSelectPosition(int i)//,int pos, ArrayList<File> arrayList)
+    public void playSelectPosition(int i)
     {
         position = i;
         uri = Uri.parse(song.get(position).toString());
-        mmp.createMediPlayer(uri);
+        mmp.createMediaPlayer(uri);
         mmp.playMusic();
-
     }
 
     public void previus(){
-
         if(position -1 <0)
         {
             position = song.size()-1;
         }else {
             position = position -1;
         }
-        //mmp.stopMusic();
         uri = Uri.parse(song.get(position).toString());
-        mmp.createMediPlayer(uri);
+        mmp.createMediaPlayer(uri);
         mmp.playMusic();
-
     }
 
-
     public void next(){
-        position = position + 1;
-//verificar si esta una playlist y detenerla
+        if (position == song.size() - 1) {
+            position = 0;
+        } else {
+            position = position + 1;
+        }
         uri = Uri.parse(song.get(position).toString());
-        mmp.createMediPlayer(uri);
+        mmp.createMediaPlayer(uri);
         mmp.playMusic();
 
 
@@ -71,8 +67,11 @@ public class PLaylist {
 
     public void play(){
         uri = Uri.parse(song.get(position).toString());
+        mmp.createMediaPlayer(uri);
+        mmp.playMusic();
 
     }
+
     public String getName(){
 
         String name = song.get(position).getName().toString();
@@ -81,7 +80,7 @@ public class PLaylist {
 
     public boolean PLisplaying(){
         boolean PLisplaing = false;
-       if (mmp.MPisplaying())
+        if (!mmp.MPisplaying())
        {
            PLisplaing = true;
        }
@@ -98,6 +97,7 @@ public class PLaylist {
 
         return totalDuration;
     }
+
     public int getprogress(){
           int progres =mmp.getProgress();
         return progres;

@@ -2,45 +2,47 @@ package com.example.michen.reproductor.newproyect;
 
 import android.content.Context;
 import android.media.MediaPlayer;
+
+import android.media.MediaPlayer.OnCompletionListener;
 import android.net.Uri;
 
 /**
  * Created by cvamedios on 29/06/17.
  */
 
-public class mMediaPLayer {
+public class mMediaPLayer implements OnCompletionListener {
 
     Context context;
+
 
 
     MediaPlayer mediaPlayer;
 
     public mMediaPLayer(Context context) {
         this.context = context;
-        //this.uri = uri;
+        mediaPlayer = new MediaPlayer();
     }
 
-
-    public void createMediPlayer(Uri uri)
-    {
-
+    public void createMediaPlayer(Uri uri) {
         try {
-           mediaPlayer = MediaPlayer.create(context,uri);
+            if (mediaPlayer.isPlaying()) {
+                mediaPlayer.stop();
+            }
+            mediaPlayer = MediaPlayer.create(context, uri);
+            mediaPlayer.isLooping();
         }catch (Exception e){
-
         }
-
     }
-    public void playMusic()
-    {
+
+    public void playMusic() {
         if(!mediaPlayer.isPlaying()){
             mediaPlayer.start();
         }
     }
+
     public void stopMusic(){
 
             mediaPlayer.stop();
-
     }
 
     public void pauseMusic(){
@@ -62,16 +64,20 @@ public class mMediaPLayer {
         return pro;
     }
 
-    public int getDuration()
-    {
+    public int getDuration() {
         int duration = mediaPlayer.getDuration();
         return duration;
     }
 
-    public void seekbar(int m)
-    {
+    public void seekbar(int m) {
         mediaPlayer.seekTo(m);
     }
+
+    @Override
+    public void onCompletion(MediaPlayer mediaPlayer) {
+
+    }
+
 
 
     //falta hacer el puase

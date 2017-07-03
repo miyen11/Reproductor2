@@ -20,16 +20,16 @@ public class PLaylist {
     public ArrayList<File> song;
     public  int position = 0;
     public Context context;
-
+    public  VisualPlayer vp;
     public Uri uri;
 
     mMediaPLayer mmp;
 
-
     public PLaylist(ArrayList song, Context context) {
         this.song = song;
         this.context = context;
-        mmp = new mMediaPLayer(context);
+        mmp = new mMediaPLayer(context ,PLaylist.this);
+
     }
 
     public void playSelectPosition(int i)
@@ -61,7 +61,7 @@ public class PLaylist {
         uri = Uri.parse(song.get(position).toString());
         mmp.createMediaPlayer(uri);
         mmp.playMusic();
-
+        vp.newprogressbar();
 
     }
 
@@ -72,6 +72,9 @@ public class PLaylist {
 
     }
 
+    public  void PLpauseMusic(){
+        mmp.pauseMusic();
+    }
     public String getName(){
 
         String name = song.get(position).getName().toString();
@@ -80,16 +83,11 @@ public class PLaylist {
 
     public boolean PLisplaying(){
         boolean PLisplaing = false;
-        if (!mmp.MPisplaying())
+        if (mmp.MPisplaying())
        {
            PLisplaing = true;
        }
        return PLisplaing;
-    }
-
-    public void strarplay(){
-        //if() ver condiciones para que no esten reproduciendo dos canciuones al mismo tiempo
-        mmp.playMusic();
     }
 
     public int getDuration(){
@@ -106,4 +104,10 @@ public class PLaylist {
     public void PLseekbar(int i) {
           mmp.seekbar(i);
     }
+
+
+    public Boolean PLsecompleto(){
+        return mmp.seCompleto();
+    }
+
 }

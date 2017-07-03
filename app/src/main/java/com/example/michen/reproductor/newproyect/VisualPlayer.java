@@ -1,7 +1,6 @@
 package com.example.michen.reproductor.newproyect;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
@@ -17,8 +16,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.michen.reproductor.R;
-import com.example.michen.reproductor.newproyect.PLaylist;
-import com.example.michen.reproductor.reproducir;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -27,12 +24,12 @@ public class VisualPlayer extends AppCompatActivity implements View.OnClickListe
 
     SeekBar sb;
     ListView lv;
-    Button play, next,previus;
-    TextView name, totalprogress,timeprogress;
-    ArrayList mlista;
+    Button play, next, previus;
+    TextView name, totalprogress, timeprogress;
     String[] items;
+    PLaylist pl;
+    public Boolean siguiente;
 
-    PLaylist pl ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,14 +37,14 @@ public class VisualPlayer extends AppCompatActivity implements View.OnClickListe
 
         final Context c = getApplicationContext();
 
-        sb = (SeekBar)findViewById(R.id.seekBar2);
+        sb = (SeekBar) findViewById(R.id.seekBar2);
         lv = (ListView) findViewById(R.id.idList);
         play = (Button) findViewById(R.id.idPlay);
-        next =(Button)findViewById(R.id.idNext);
-        previus =(Button)findViewById(R.id.idPrev);
-        name = (TextView)findViewById(R.id.idName);
-        totalprogress =(TextView)findViewById(R.id.idTvTotalDuration);
-        timeprogress= (TextView)findViewById(R.id.idTimeProgress);
+        next = (Button) findViewById(R.id.idNext);
+        previus = (Button) findViewById(R.id.idPrev);
+        name = (TextView) findViewById(R.id.idName);
+        totalprogress = (TextView) findViewById(R.id.idTvTotalDuration);
+        timeprogress = (TextView) findViewById(R.id.idTimeProgress);
 
         play.setOnClickListener(this);
         next.setOnClickListener(this);
@@ -56,17 +53,15 @@ public class VisualPlayer extends AppCompatActivity implements View.OnClickListe
 
         final ArrayList<File> listsong = (ArrayList<File>) getIntent().getSerializableExtra("listsong");
         items = new String[listsong.size()];
-        for (int i =0;i<listsong.size();i++)
-        {
-            items[i] = listsong.get(i).getName().toString().replace(".mp3","").replace(".wav","").toLowerCase();
+        for (int i = 0; i < listsong.size(); i++) {
+            items[i] = listsong.get(i).getName().toString().replace(".mp3", "").replace(".wav", "").toLowerCase();
         }
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>
-                (getApplicationContext(),R.layout.canciones,R.id.textView,items);
+                (getApplicationContext(), R.layout.canciones, R.id.textView, items);
         lv.setAdapter(adapter);
 
         pl = new PLaylist(listsong, c);
-
         sb.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {//manejo de la barra
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -80,20 +75,29 @@ public class VisualPlayer extends AppCompatActivity implements View.OnClickListe
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                //mediaPlayer.seekTo(seekBar.getProgress());//
                 pl.PLseekbar(seekBar.getProgress());
 
             }
         });
+
 
     }
 
     @Override
     public void onClick(View view) {
         int id = view.getId();
-        switch (id){
+        switch (id) {
             case R.id.idPlay:
-                pl.play();
+                if (pl.PLisplaying()) {
+                    play.setText("PLAY");
+                    pl.PLpauseMusic();
+                }
+                if (!pl.PLisplaying()) {
+                    pl.play();
+                    play.setText("PAUSE");
+                    new progressbar().execute();
+                }
+
                 new progressbar().execute();
                 break;
             case R.id.idNext:
@@ -108,17 +112,18 @@ public class VisualPlayer extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    protected void startfromBeginning(){
-        //buscar la cacncion actual
-    }
-
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
         pl.playSelectPosition(i);
+        newprogressbar();
+    }
+
+    public void newprogressbar(){
         new progressbar().execute();
     }
 
-    private class progressbar extends AsyncTask<Void,Integer,Boolean>{
+
+    public class progressbar extends AsyncTask<Void, Integer, Boolean> {
 
         @Override
         protected void onPreExecute() {
@@ -126,20 +131,20 @@ public class VisualPlayer extends AppCompatActivity implements View.OnClickListe
             sb.setMax(pl.getDuration());
             sb.setProgress(0);
             int duracion = pl.getDuration();
-            totalprogress.setText(DateUtils.formatElapsedTime(duracion/1000));
+            totalprogress.setText(DateUtils.formatElapsedTime(duracion / 1000));
             name.setText(pl.getName());
-
+            siguiente = false;
         }
+
         @Override
         protected Boolean doInBackground(Void... params) {
 
             int duraciontotal = pl.getDuration();
             int posicionActual = 0;
 
-            while (posicionActual<duraciontotal){
+            while (posicionActual < duraciontotal) {
                 try {
-
-                    posicionActual =pl.getprogress();
+                    posicionActual = pl.getprogress();
                     publishProgress(posicionActual);
                     SystemClock.sleep(60);//ver
                 } catch (Exception e) {
@@ -159,8 +164,7 @@ public class VisualPlayer extends AppCompatActivity implements View.OnClickListe
         protected void onPostExecute(Boolean aBoolean) {
             super.onPostExecute(aBoolean);
 
-
+        }
     }
-}
 
 }

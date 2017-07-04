@@ -1,9 +1,9 @@
 package com.example.michen.reproductor.newproyect;
 
 import android.content.Context;
-import android.media.MediaPlayer;
 
-import android.media.MediaPlayer.OnCompletionListener;
+import android.media.MediaPlayer;
+import android.media.MediaPlayer.OnErrorListener;
 import android.net.Uri;
 import android.widget.Toast;
 
@@ -11,36 +11,31 @@ import android.widget.Toast;
  * Created by cvamedios on 29/06/17.
  */
 
-public class mMediaPLayer implements OnCompletionListener {
+public class mMediaPLayer {
+
+
+   //ver todos los metodos y excepciones de media player incluidos los metodos de error
 
     Context context;
-
-
-
-    PLaylist pl;
     MediaPlayer mediaPlayer;
-    public boolean complet;
-    Uri u;
 
-    public mMediaPLayer(Context context ,PLaylist pl) {
+
+
+    public mMediaPLayer(Context context ) {
         this.context = context;
-        this.pl = pl;
         mediaPlayer = new MediaPlayer();
     }
 
-    public MediaPlayer createMediaPlayer(Uri uri) {
+    public void createMediaPlayer(Uri uri) {
         try {
             if (mediaPlayer.isPlaying()) {
                 mediaPlayer.stop();
             }
-            mediaPlayer = MediaPlayer.create(context, uri);
-            complet = false;
-            mediaPlayer.setOnCompletionListener(this);
+            mediaPlayer.setDataSource(context,uri);
+            mediaPlayer.prepare();
 
         }catch (Exception e){
-
         }
-        return mediaPlayer;
     }
 
     public void playMusic() {
@@ -81,23 +76,13 @@ public class mMediaPLayer implements OnCompletionListener {
         mediaPlayer.seekTo(m);
     }
 
-
-   @Override
-   public void onCompletion(MediaPlayer mp) {
-       if (!mediaPlayer.isPlaying())
-       {
-           complet = true;
-       }
-       seCompleto();
-   }
-
-   public Boolean seCompleto(){
-       Boolean a = false;
-       if (complet){
-           a = true;
-       }
-       return a;
-   }
-
+    public Boolean finished(){
+        Boolean var = false;
+        if (!mediaPlayer.isPlaying() && mediaPlayer != null)
+        {
+            var = true;
+        }
+        return var;
+    }
 
 }

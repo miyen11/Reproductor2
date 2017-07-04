@@ -2,19 +2,22 @@ package com.example.michen.reproductor.newproyect;
 
 import android.content.Context;
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import com.example.michen.reproductor.reproducir;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Queue;
 
 /**
  * Created by cvamedios on 29/06/17.
  */
 
-public class PLaylist {
+public class PLaylist implements MediaPlayer.OnCompletionListener {
 
 
     public ArrayList<File> song;
@@ -28,7 +31,8 @@ public class PLaylist {
     public PLaylist(ArrayList song, Context context) {
         this.song = song;
         this.context = context;
-        mmp = new mMediaPLayer(context ,PLaylist.this);
+        this.vp = vp;
+        mmp = new mMediaPLayer(context);
 
     }
 
@@ -61,7 +65,6 @@ public class PLaylist {
         uri = Uri.parse(song.get(position).toString());
         mmp.createMediaPlayer(uri);
         mmp.playMusic();
-        vp.newprogressbar();
 
     }
 
@@ -73,8 +76,10 @@ public class PLaylist {
     }
 
     public  void PLpauseMusic(){
+
         mmp.pauseMusic();
     }
+
     public String getName(){
 
         String name = song.get(position).getName().toString();
@@ -105,9 +110,17 @@ public class PLaylist {
           mmp.seekbar(i);
     }
 
-
-    public Boolean PLsecompleto(){
-        return mmp.seCompleto();
+    public Boolean PLFinished(){
+        Boolean var = false;
+         if (mmp.finished()){
+             var = true;
+         }
+         return var;
     }
 
+
+    @Override
+    public void onCompletion(MediaPlayer mediaPlayer) {
+        Toast.makeText(context,"se completo",Toast.LENGTH_LONG).show();
+    }
 }

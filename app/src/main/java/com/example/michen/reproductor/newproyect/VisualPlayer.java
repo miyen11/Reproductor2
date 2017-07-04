@@ -22,21 +22,22 @@ import java.util.ArrayList;
 
 public class VisualPlayer extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemClickListener {
 
+
     SeekBar sb;
     ListView lv;
     Button play, next, previus;
     TextView name, totalprogress, timeprogress;
     String[] items;
     PLaylist pl;
-    public Boolean siguiente;
+    Boolean siguiente = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_visual_player);
 
-        final Context c = getApplicationContext();
 
+        final Context c = getApplicationContext();
         sb = (SeekBar) findViewById(R.id.seekBar2);
         lv = (ListView) findViewById(R.id.idList);
         play = (Button) findViewById(R.id.idPlay);
@@ -60,8 +61,9 @@ public class VisualPlayer extends AppCompatActivity implements View.OnClickListe
         ArrayAdapter<String> adapter = new ArrayAdapter<String>
                 (getApplicationContext(), R.layout.canciones, R.id.textView, items);
         lv.setAdapter(adapter);
-
-        pl = new PLaylist(listsong, c);
+        if(listsong.size() > 1 ){
+            pl = new PLaylist(listsong,c);
+        }
         sb.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {//manejo de la barra
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -80,7 +82,6 @@ public class VisualPlayer extends AppCompatActivity implements View.OnClickListe
             }
         });
 
-
     }
 
     @Override
@@ -88,25 +89,15 @@ public class VisualPlayer extends AppCompatActivity implements View.OnClickListe
         int id = view.getId();
         switch (id) {
             case R.id.idPlay:
-                if (pl.PLisplaying()) {
-                    play.setText("PLAY");
-                    pl.PLpauseMusic();
-                }
-                if (!pl.PLisplaying()) {
-                    pl.play();
-                    play.setText("PAUSE");
-                    new progressbar().execute();
-                }
+                pl.play();
 
-                new progressbar().execute();
                 break;
             case R.id.idNext:
                 pl.next();
-                new progressbar().execute();
+
                 break;
             case R.id.idPrev:
                 pl.previus();
-                new progressbar().execute();
                 break;
 
         }
@@ -119,9 +110,9 @@ public class VisualPlayer extends AppCompatActivity implements View.OnClickListe
     }
 
     public void newprogressbar(){
+
         new progressbar().execute();
     }
-
 
     public class progressbar extends AsyncTask<Void, Integer, Boolean> {
 
@@ -151,7 +142,6 @@ public class VisualPlayer extends AppCompatActivity implements View.OnClickListe
                 }
             }
             return true;
-
         }
 
         @Override
@@ -163,7 +153,7 @@ public class VisualPlayer extends AppCompatActivity implements View.OnClickListe
         @Override
         protected void onPostExecute(Boolean aBoolean) {
             super.onPostExecute(aBoolean);
-
+                siguiente = true;
         }
     }
 

@@ -4,6 +4,7 @@
       <mapping pattern="-seqNum" type="PLAIN_TEXT" />
       <mapping pattern="Num" type="PLAIN_TEXT" />
       <mapping pattern="seqNum" type="PLAIN_TEXT" />
+      <mapping ext="mp3" type="PLAIN_TEXT" />
     </extensionMap>
   </component>
 </application>

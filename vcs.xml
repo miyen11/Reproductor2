@@ -36,6 +36,6 @@
         </UrlAndUserName>
       </list>
     </option>
-    <option name="cloneParentDir" value="$USER_HOME$/miyen" />
+    <option name="cloneParentDir" value="$USER_HOME$/miyen/ClipGO_Android/ClipGo.0.1" />
   </component>
 </application>

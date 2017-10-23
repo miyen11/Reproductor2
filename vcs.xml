@@ -38,6 +38,10 @@
           <option name="url" value="https://github.com/miyen11/ClipGo.0.1.git" />
           <option name="userName" value="" />
         </UrlAndUserName>
+        <UrlAndUserName>
+          <option name="url" value="http://github.com" />
+          <option name="userName" value="miyen11" />
+        </UrlAndUserName>
       </list>
     </option>
     <option name="cloneParentDir" value="$USER_HOME$/miyen" />

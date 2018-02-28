@@ -58,8 +58,16 @@
           <option name="url" value="https://miyenjuan@bitbucket.org/cva-sistemas/clipgo-mobile.git" />
           <option name="userName" value="" />
         </UrlAndUserName>
+        <UrlAndUserName>
+          <option name="url" value="https://bitbucket.org/cva-sistemas/clipgo-mobile/src/911f11aa8ee9bc2f5e4c4e73cb946055b87b2c9f" />
+          <option name="userName" value="" />
+        </UrlAndUserName>
+        <UrlAndUserName>
+          <option name="url" value="http://bitbucket.org" />
+          <option name="userName" value="sistemascva03@gmail.com" />
+        </UrlAndUserName>
       </list>
     </option>
-    <option name="cloneParentDir" value="$USER_HOME$/Miyén/Proyectos Android/dosfragmnetosconnavigation" />
+    <option name="cloneParentDir" value="$USER_HOME$/Miyén/ClipGo/ClipgoShare" />
   </component>
 </application>
